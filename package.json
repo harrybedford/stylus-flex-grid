@@ -1,0 +1,20 @@
+{
+  "name": "stylus-flex-grid",
+  "version": "1.0.0",
+  "description": "A simple flex grid library using Stylus ",
+  "main": "index.js",
+  "scripts": {
+    "start": "stylus grid.styl"
+  },
+  "keywords": [
+    "Stylus",
+    "grid",
+    "flex",
+    "css"
+  ],
+  "author": "Harry Bedford",
+  "license": "ISC",
+  "devDependencies": {
+    "stylus": "^0.54.5"
+  }
+}

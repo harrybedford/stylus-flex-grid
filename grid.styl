@@ -1,0 +1,146 @@
+//SETTINGS
+gutter = 20px
+columns = 12
+breakpoints = {
+  s: 0,
+  m: 768px,
+  l: 1025px,
+  xl: 1201px
+}
+
+//FUNCTIONS
+grid(direction = 'row', cells-align = 'top', justify = '')
+  display flex
+  flex-wrap wrap
+  if cells-align is 'top'
+    align-items flex-start
+  if cells-align is 'bottom'
+    align-items flex-end
+  if cells-align is 'center'
+    align-items center
+  if cells-align is 'stretch'
+    align-items stretch
+  if direction is 'row'
+    flex-direction row
+  if direction is 'row-reverse'
+    flex-direction row-reverse
+  if direction is 'column'
+    flex-direction column
+  if direction is 'column-reverse'
+    flex-direction column-reverse
+  if justify is 'center'
+    justify-content center
+  if justify is 'start'
+    justify-content flex-start
+  if justify is 'end'
+    justify-content flex-end
+        
+cell(i = 1, align = '')
+  if gutter is not 0
+    flex-basis s('calc(100% * %s - %s)', i / columns, gutter)
+  else
+    flex-basis: s('calc(100% * %s)', i / columns)
+  min-width 0
+  if gutter is not 0
+    margin (gutter / 2)
+  if align is 'top'
+    align-self flex-start
+  if align is 'bottom'
+    align-self flex-end
+  if align is 'center'
+    align-self center
+        
+cell-offset(i = 1)
+  if gutter is not 0
+    margin-left s('calc(100% * %s + (%s / 2))', i / columns, gutter) !important
+  else
+    margin-left s('calc(100% * %s)', i / columns) !important
+        
+center(value, pad = null)
+  margin-left auto
+  margin-right auto
+  width 100%
+  u = unit(value)
+  if (u is 'rem' or u is '%')
+    max-width unit(value, u)
+  else
+    max-width value
+  if (pad is null)
+    return
+  else
+    p = unit(pad)
+    if (p is 'rem' or p is '%')
+      padding-left unit(pad, p)
+      padding-right unit(pad, p)
+    else
+      padding-left pad
+      padding-right pad
+          
+stack()
+  cell(1, 1)
+    
+
+//CLASS GENERATORS
+cell-classes-generator()
+  for key, value in breakpoints
+    @media screen and (min-width: value)
+      for i in range(1, columns, 1)
+        .{key}-{i}
+          cell(i)
+        .off-{key}-{i}
+          cell-offset(i)
+
+grid-classes-generator()
+  for key, value in breakpoints
+    @media screen and (min-width: value)
+      for i in range(1, columns, 1)
+        .{key}-{i} > [class~={cellClass}]
+          cell(i)
+
+//CLASSES
+.grid
+  grid(cells-align: 'top')
+
+.grid-bottom
+  grid(cells-align: 'bottom')
+
+.grid-center
+  grid(cells-align: 'center')
+
+.grid-stretch
+  grid(cells-align: 'stretch')
+
+.grid-justify-center
+  justify-content center
+
+.grid-justify-start
+  justify-content flex-start
+
+.grid-justify-end
+  justify-content flex-end
+
+.grid-row
+  grid(direction: 'row')
+
+.grid-row-reverse
+  grid(direction: 'row-reverse')
+
+.grid-column
+  grid(direction: 'column')
+
+.grid-column-reverse
+  grid(direction: 'column-reverse')
+
+grid-classes-generator()
+
+.cell-top
+  align-self flex-start
+
+.cell-bottom
+  align-self flex-end
+
+.cell-center
+  align-self center
+
+cell-classes-generator()
+		
